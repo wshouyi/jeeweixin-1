@@ -17,12 +17,15 @@ import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 import com.wxapi.vo.Article;
 import com.wxapi.vo.MsgRequest;
+import com.wxapi.vo.MsgResponse;
 import com.wxapi.vo.MsgResponseImage;
 import com.wxapi.vo.MsgResponseMusic;
 import com.wxapi.vo.MsgResponseNews;
 import com.wxapi.vo.MsgResponseText;
+import com.wxapi.vo.MsgResponseTransInfo;
 import com.wxapi.vo.MsgResponseVideo;
 import com.wxapi.vo.MsgResponseVoice;
+import com.wxapi.vo.TransInfo;
 
 /**
  * xml 消息处理工具类
@@ -85,6 +88,17 @@ public class MsgXmlUtil {
 		inputStream.close();
 		inputStream = null;
 		return msgReq;
+	}
+	
+	public static String toXml(MsgResponse msgResponse){
+		xstream.alias("xml", msgResponse.getClass());
+		return xstream.toXML(msgResponse);
+	}
+	
+	public static String transToXml(MsgResponseTransInfo transInfo) {
+		xstream.alias("xml", transInfo.getClass());
+		xstream.alias("item", new TransInfo().getClass());
+		return xstream.toXML(transInfo);
 	}
 	
 	public static String textToXml(MsgResponseText text) {

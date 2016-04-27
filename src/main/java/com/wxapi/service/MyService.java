@@ -29,6 +29,9 @@ public interface MyService {
 	//根据openid 获取粉丝，如果没有，同步粉丝
 	public AccountFans getFansByOpenId(String openid,MpAccount mpAccount);
 	
+	//获取答疑教师列表
+	public boolean syncKefuList(MpAccount mpAccount);
+	
 }
 
 

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://10.20.91.130/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.wxcms.mapper.HomeworkDao">
+
+	<select id="listStudentId" resultType="com.wxcms.domain.Homework">   <!-- parameterType="java.lang.String" -->
+		 SELECT h.*,s.name,s.studentId,s.classId from t_wxcms_homework h , t_wxcms_student s
+		 WHERE h.openid = s.openid and s.studentid = #{studentId}  ORDER BY ID LIMIT #{param2.start} , #{param2.pageSize}
+	</select>
+	
+	<select id="listHomeworkByDate" resultType="com.wxcms.domain.Homework">   <!-- parameterType="java.lang.String" -->
+		 SELECT h.*,s.name,s.studentId,s.classId from t_wxcms_homework h , t_wxcms_student s
+		 WHERE h.openid = s.openid and h.date = #{date}  ORDER BY ID LIMIT #{param2.start} , #{param2.pageSize}
+	</select>
+
+	<select id="getTotalCount" parameterType="com.wxcms.domain.Homework" resultType="java.lang.Integer">
+		SELECT count(id) FROM t_wxcms_homework 
+	</select>
+	
+	<select id="getLastOpenId" resultType="com.wxcms.domain.Homework">   <!-- bug bug bug bug bug -->
+		SELECT * FROM t_wxcms_homework 
+		ORDER BY ID DESC
+		LIMIT 0 , 1
+	</select>
+
+	<select id="paginationEntity" resultType="com.wxcms.domain.Homework">
+		SELECT h.*,s.name,s.studentId,s.classId from t_wxcms_homework h , t_wxcms_student s	
+		WHERE h.openId = s.openId
+		ORDER BY h.ID 
+		LIMIT #{param2.start} , #{param2.pageSize}
+	</select>
+	
+	<select id="getCountByStudentId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT count(h.id) from t_wxcms_homework h , t_wxcms_student s WHERE h.openid = s.openid and s.studentid = #{studentId}
+	</select>
+	
+	<select id="getCountByDate" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT count(id) from t_wxcms_homework WHERE DATE = #{date}
+	</select>
+
+	<select id="getById" parameterType="java.lang.String" resultType="com.wxcms.domain.Homework">
+		SELECT * FROM t_wxcms_homework WHERE ID = #{id}
+	</select>
+	
+	<select id="getByOpenId" parameterType="java.lang.String" resultType="com.wxcms.domain.Homework">   <!-- bug bug bug bug bug -->
+		SELECT * FROM t_wxcms_homework WHERE OPENID = #{openId}
+	</select>
+	
+	<select id="getByMsgId" parameterType="java.lang.String" resultType="com.wxcms.domain.Homework">   <!-- bug bug bug bug bug -->
+		SELECT h.*,s.name,s.studentId,s.classId from t_wxcms_homework h , t_wxcms_student s
+		WHERE h.msgid = #{msgId} AND h.openId = s.openId
+	</select>
+
+	<insert id="add" parameterType="com.wxcms.domain.Homework" flushCache="true"  useGeneratedKeys="true" keyProperty="id"  >
+		<![CDATA[ 
+		INSERT INTO t_wxcms_homework ( ID,OPENID,URL,CREATETIME,DATE )  VALUES ( #{id},#{openId},#{url},#{createTime},#{date} ) 
+		 ]]>
+	</insert>
+	
+	<insert id="addList" parameterType="list">  
+        INSERT INTO t_wxcms_homework ( ID,OPENID,URL,CREATETIME,DATE,GRADE )
+        VALUES
+        <foreach  collection="list" item="item" index="index" separator="," >  
+        	<![CDATA[
+            ( #{item.id},#{item.openId},#{item.url},#{item.createTime},#{item.date},#{item.grade} ) 
+        	 ]]>
+        </foreach> 
+    </insert>
+	
+	<update id="update" parameterType="com.wxcms.domain.Homework" flushCache="true">
+		UPDATE t_wxcms_homework SET GRADE = #{grade} WHERE MSGID = #{msgId} 
+	</update>
+	
+	<update id="grade" parameterType="com.wxcms.domain.Homework" flushCache="true">
+		UPDATE t_wxcms_homework SET GRADE = #{grade} WHERE MSGID = #{msgId} 
+	</update>
+
+	<delete id="delete" parameterType="com.wxcms.domain.Homework" >
+		DELETE FROM t_wxcms_homework WHERE ID = #{id}
+	</delete>
+	
+	<delete id="deleteByOpenId" parameterType="java.lang.String" >               <!-- bug bug bug bug bug -->
+		DELETE FROM t_wxcms_homework WHERE OPENID = #{openId}
+	</delete>
+
+</mapper>

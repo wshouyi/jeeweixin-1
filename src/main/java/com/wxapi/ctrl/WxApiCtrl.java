@@ -27,9 +27,11 @@ import com.core.util.DateUtil;
 import com.core.util.UploadUtil;
 import com.core.util.wx.SignUtil;
 import com.wxapi.process.ErrCode;
+import com.wxapi.process.HttpMethod;
 import com.wxapi.process.MediaType;
 import com.wxapi.process.MpAccount;
 import com.wxapi.process.MsgXmlUtil;
+import com.wxapi.process.WxApi;
 import com.wxapi.process.WxApiClient;
 import com.wxapi.process.WxMemoryCacheClient;
 import com.wxapi.process.WxSign;
@@ -143,6 +145,35 @@ public class WxApiCtrl {
 		}
 		mv.addObject("failureMsg", failureMsg);
 		return mv;
+	}
+	
+	//获取学生列表
+	@RequestMapping(value = "/syncStudentList")
+	public ModelAndView syncStudentList(){
+		MpAccount mpAccount = WxMemoryCacheClient.getSingleMpAccount();//获取缓存中的唯一账号
+		if(mpAccount != null){
+			return new ModelAndView("redirect:/student/paginationStudent.html");
+		}
+		ModelAndView mv = new ModelAndView("common/failure");
+		mv.addObject("failureMsg", "获取学生列表失败");
+		return mv;
+
+	}
+	
+	//获取答疑教师列表
+	@RequestMapping(value = "/syncKefuList")
+	public ModelAndView syncKefuList(){
+		MpAccount mpAccount = WxMemoryCacheClient.getSingleMpAccount();//获取缓存中的唯一账号
+		if(mpAccount != null){
+			boolean flag = myService.syncKefuList(mpAccount);
+			if(flag){
+				return new ModelAndView("redirect:/kefu/paginationEntity.html");
+			}
+		}
+		ModelAndView mv = new ModelAndView("common/failure");
+		mv.addObject("failureMsg", "获取答疑教师列表失败");
+		return mv;
+
 	}
 	
 	//获取用户列表
@@ -297,25 +328,27 @@ public class WxApiCtrl {
 	}
 	
 	/**
-	 * 发送客服消息
-	 * @param openId ： 粉丝的openid
+	 * 添加客服
+	 * 
 	 * @param content ： 消息内容
 	 * @return
 	 */
-	@RequestMapping(value = "/sendCustomTextMsg", method = RequestMethod.POST)
-	public void sendCustomTextMsg(HttpServletRequest request,HttpServletResponse response,String openid){
+	@RequestMapping(value = "/addKefu")
+	public void addKefu(HttpServletRequest request,HttpServletResponse response){
 		MpAccount mpAccount = WxMemoryCacheClient.getSingleMpAccount();//获取缓存中的唯一账号
-		String content = "微信派官方测试客服消息";
-		JSONObject result = WxApiClient.sendCustomTextMessage(openid, content, mpAccount);
-		try {
-			if(result.getInt("errcode") != 0){
-				response.getWriter().write("send failure");
-			}else{
-				response.getWriter().write("send success");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String url = WxApi.getAddKefuUrl(WxApiClient.getAccessToken(mpAccount));
+		JSONObject jsonObject = getKefuJSONObj("123");
+		JSONObject returnJson = WxApi.httpsRequest(url, HttpMethod.POST, jsonObject.toString());
+		System.out.println(returnJson);
+		System.out.println(jsonObject);
+	}
+	
+	public static JSONObject getKefuJSONObj(String pwd){
+		JSONObject obj = new JSONObject();
+		obj.put("kf_account", "test@gh_2ccdfcc4790a");
+		obj.put("nickname", "测试");
+		obj.put("password", pwd);
+		return obj;
 	}
 	
 	/**

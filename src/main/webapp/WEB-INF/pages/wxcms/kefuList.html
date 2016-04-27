@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<#include "../common/res.html">
+		<script type="text/javascript">
+			function doSync(){
+				if(confirm("确定同步?")){
+					window.location.href='${s.base}/wxapi/syncKefuList.html';
+				}
+			}
+		</script>
+	</head>
+	
+	<body class="bg">
+		
+		<div class="content">
+			<div class="block-nav">
+				<#include "../common/nav.html">
+			</div>
+			<div class="block-content" >
+				
+				<div class="block-content-nav">
+					<span class="title">答疑教师管理</span>
+				</div>
+				
+				<div class="block-content-description">
+					<span>
+						管理答疑教师微信公众账号
+					</span>
+				</div>
+				<form id="queryPageForm" action="">
+				<div class="block-content-content">
+					<div class="optbar">
+						<input class="btn" onclick="doSync();" style="width:150px;" type="button" value="查看答疑教师"/>
+					</div>
+					<table class="fm-table">
+						<thead>
+							<tr style="height: 45px;">
+								<td style="width:80px;">客服账号</td>
+								<td style="width:80px;">客服昵称</td>
+								<td style="width:80px;">客服工号</td>
+								<td style="width:30px;"></td>
+							</tr>
+						</thead>
+						<tbody>
+							<#list pagination.items as row>
+							<#if row_index %2 == 0>
+							<tr style="height:40px;">
+							<#else>
+							<tr style="height:40px;background-color:#f9f9f9;">
+							</#if>
+								<td>${row.kefuAccount!}</td>
+								<td>${row.kefuNick!}</td>
+								<td>${row.kefuId!}</td>
+								<td>
+									<a href="${s.base}/wxapi/syncKEFU.html?openId=${row.openId!}">
+									<input type="button" style="width:50px;" class="btn" value="修改"/>
+									</a>
+									<a href="${s.base}/wxapi/syncKEFU.html?openId=${row.openId!}">
+									<input type="button" style="width:50px;" class="btn" value="删除"/>
+									</a>
+								</td>
+							</tr>
+							</#list>
+						</tbody>
+					</table>
+					
+					<#include "../common/pagination.html">
+				</div>
+				</form>
+			</div>
+			<div class="clearfloat"></div>
+		</div>
+	</body>
+	
+</html>

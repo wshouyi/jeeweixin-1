@@ -10,8 +10,11 @@ import org.apache.commons.lang.StringUtils;
 
 import com.wxapi.vo.Article;
 import com.wxapi.vo.MsgRequest;
+import com.wxapi.vo.MsgResponse;
 import com.wxapi.vo.MsgResponseNews;
 import com.wxapi.vo.MsgResponseText;
+import com.wxapi.vo.MsgResponseTransInfo;
+import com.wxapi.vo.TransInfo;
 import com.wxcms.domain.MsgNews;
 import com.wxcms.domain.MsgText;
 
@@ -74,5 +77,28 @@ public class WxMessageBuilder {
 			return null;
 		}
 	}
+	
+	//转发到客服
+	public static MsgResponse getMsgResponse(MsgRequest msgRequest){
+			MsgResponse response = new MsgResponse();
+			response.setToUserName(msgRequest.getFromUserName());
+			response.setFromUserName(msgRequest.getToUserName());
+			response.setMsgType(MsgType.TRANSFER.toString());
+			response.setCreateTime(new Date().getTime());
+			return response;
+	}
+	
+	//转发到作业客服
+	public static MsgResponseTransInfo getMsgResponseTransInfo(MsgRequest msgRequest,String kfAccount){
+		MsgResponseTransInfo response = new MsgResponseTransInfo();
+		TransInfo transInfo = new TransInfo();
+		transInfo.setKfAccount(kfAccount); //作业客服账号
+		response.setToUserName(msgRequest.getFromUserName());
+		response.setFromUserName(msgRequest.getToUserName());
+		response.setMsgType(MsgType.TRANSFER.toString());
+		response.setTransInfo(transInfo);
+		response.setCreateTime(new Date().getTime());
+		return response;
+}
 	
 }

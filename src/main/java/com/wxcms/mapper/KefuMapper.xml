@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://10.20.91.130/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.wxcms.mapper.KefuDao">
+
+	<select id="list" parameterType="com.wxcms.domain.Kefu" resultType="com.wxcms.domain.Kefu">
+		SELECT * FROM t_wxcms_kefu ORDER BY ID
+	</select>
+
+	<select id="getTotalItemsCount" parameterType="com.wxcms.domain.Kefu" resultType="java.lang.Integer">
+		SELECT count(id) FROM t_wxcms_kefu
+	</select>
+
+	<select id="paginationEntity" resultType="com.wxcms.domain.Kefu">
+		SELECT * FROM t_wxcms_kefu
+		ORDER BY ID 
+		LIMIT #{param2.start} , #{param2.pageSize}
+	</select>
+	
+	<select id="getLastKefuId" resultType="com.wxcms.domain.Kefu">
+		SELECT * FROM t_wxcms_kefu
+		ORDER BY ID DESC
+		LIMIT 0 , 1
+	</select>
+
+	<select id="getById" parameterType="java.lang.String" resultType="com.wxcms.domain.Kefu">
+		SELECT * FROM t_wxcms_kefu WHERE ID = #{id}
+	</select>
+	
+	<select id="getByKefuId" parameterType="java.lang.String" resultType="com.wxcms.domain.Kefu">
+		SELECT * FROM t_wxcms_kefu WHERE KEFUID = #{kefuId}
+	</select>
+
+	<insert id="add" parameterType="com.wxcms.domain.Kefu" flushCache="true"  useGeneratedKeys="true" keyProperty="id"  >
+		<![CDATA[ 
+		INSERT INTO t_wxcms_kefu ( KEFUACCOUNT,KEFUNICK,KEFUID,KEFUHEADIMGURL )  VALUES ( #{kefuAccount},#{kefuNick},#{kefuId},#{kefuHeadImgurl} ) 
+		 ]]>
+	</insert>
+	
+	<insert id="addList" parameterType="list">  
+        INSERT INTO t_wxcms_kefu ( KEFUACCOUNT,KEFUNICK,KEFUID,KEFUHEADIMGURL )
+        VALUES
+        <foreach  collection="list" item="item" index="index" separator="," >  
+        	<![CDATA[
+            ( #{item.kefuAccount},#{item.kefuNick},#{item.kefuId},#{item.kefuHeadImgurl} ) 
+        	 ]]>
+        </foreach> 
+    </insert>
+	
+	<update id="update" parameterType="com.wxcms.domain.Kefu" flushCache="true">
+		UPDATE t_wxcms_kefu SET KEFUACCOUNT = #{kefuAccount},KEFUNICK = #{kefuNick},KEFUID = #{kefuId},KEFUHEADIMGURL = #{kefuHeadImgurl} WHERE ID = #{id} 
+	</update>
+
+	<delete id="delete" parameterType="com.wxcms.domain.Kefu" >
+		DELETE FROM t_wxcms_kefu WHERE ID = #{id}
+	</delete>
+	
+	<delete id="deleteByKefuId" parameterType="java.lang.String" >
+		DELETE FROM t_wxcms_kefu WHERE KEFUID = #{kefuId}
+	</delete>
+
+</mapper>

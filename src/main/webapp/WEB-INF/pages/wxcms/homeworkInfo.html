@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<#include "../common/res.html">
+	</head>
+	
+	<body class="bg">
+		
+		<div class="content">
+			<div class="block-nav">
+				<#include "../common/nav.html">
+			</div>
+			<div class="block-content" >
+				
+				<div class="block-content-nav">
+					<span class="title">查看作业</span>
+				</div>
+				
+				<div class="block-content-description">
+					<span>
+						查看作业
+					</span>
+				</div>
+				
+				<div class="block-content-content">
+					<table class="fm-table">
+						<tbody>
+							<tr>
+								<td style="width:150px;">${homework.name!}</td>
+								<td style="width:200px;">${homework.studentId!}</td>
+								<td style="width:200px;">${homework.classId!}</td>
+								<td style="width:50px;">${homework.grade!}</td>
+								
+							</tr>
+							<tr>
+								<img style="margin:5px;" src="${homework.url!}"/>
+							</tr>
+							<br/>
+							<tr>
+								
+								<form action="${s.base}/homework/update.html?msgId=${homework.msgId!}" method="post">
+								<span>请评分：</span>
+								<input type="radio" name="grade" value="A"/>A&nbsp;&nbsp;
+								<input type="radio" name="grade" value="B"/>B&nbsp;&nbsp;
+								<input type="radio" name="grade" value="C"/>C&nbsp;&nbsp;
+								<input type="radio" name="grade" value="D"/>D&nbsp;&nbsp;
+								<input type="submit" class="btn" value="提交" style="width:50px;" />
+								</form>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="clearfloat"></div>
+		</div>
+	</body>
+	
+</html>

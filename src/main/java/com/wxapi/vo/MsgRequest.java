@@ -20,6 +20,11 @@ public class MsgRequest{
 	//图片消息
 	private String PicUrl;
 	
+	//语音消息
+	private String MediaId;
+	private String Format;
+	private String Recognition;
+	
 	//地理位置消息
 	private String Location_X;
 	private String Location_Y;
@@ -109,6 +114,24 @@ public class MsgRequest{
 	}
 	public void setEventKey(String eventKey) {
 		EventKey = eventKey;
+	}
+	public String getMediaId() {
+		return MediaId;
+	}
+	public void setMediaId(String mediaId) {
+		MediaId = mediaId;
+	}
+	public String getFormat() {
+		return Format;
+	}
+	public void setFormat(String format) {
+		Format = format;
+	}
+	public String getRecognition() {
+		return Recognition;
+	}
+	public void setRecognition(String recognition) {
+		Recognition = recognition;
 	}
 	
 }

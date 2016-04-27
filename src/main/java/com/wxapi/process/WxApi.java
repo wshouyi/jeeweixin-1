@@ -79,9 +79,33 @@ public class WxApi {
 	//发送客服消息
 	private static final String SEND_CUSTOM_MESSAGE = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s";
 	
+	//新增客服
+	private static final String ADD_CUSTOM = "https://api.weixin.qq.com/customservice/kfaccount/add?access_token=%s";
+	
+	//删除客服
+	private static final String DELETE_CUSTOM = "https://api.weixin.qq.com/customservice/kfaccount/del?access_token=%s&kf_account=%s";
+
+	//获取客服信息
+	private static final String GET_CUSTOM = "https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token=%s";
+	
 	//模板消息接口
 	private static final String SEND_TEMPLATE_MESSAGE = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s";
 	
+	
+	//新增客服接口
+	public static String getAddKefuUrl(String token){
+		return String.format(ADD_CUSTOM, token);
+	}
+	
+	//删除客服接口
+	public static String getDeleteKefuUrl(String token,String kfaccount){
+		return String.format(DELETE_CUSTOM, token,kfaccount);
+	}
+	
+	//获取客服信息接口
+	public static String getKefuUrl(String token){
+		return String.format(GET_CUSTOM, token);
+	}
 	
 	
 	//获取token接口
@@ -178,6 +202,15 @@ public class WxApi {
 		return String.format(SEND_TEMPLATE_MESSAGE, token);
 	}
 	
+	
+	
+	/*
+	 * 新增客服
+	 * */
+	public static String getAddKefuJson(String kfaccount,String nickname,String password){
+		String postStr = "{\"kf_account\":\"%s\",\"nickname\":\"%s\",\"password\":\"%s\"}";
+		return String.format(postStr, kfaccount, nickname,password);
+	}
 	
 	
 	/**

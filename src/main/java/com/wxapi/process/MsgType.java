@@ -17,7 +17,9 @@ public enum MsgType {
 	MPNEWS("mpnews"),//群发图文消息
 	
 	SUBSCRIBE("subscribe"),//订阅消息
-	UNSUBSCRIBE("unsubscribe");//取消订阅
+	UNSUBSCRIBE("unsubscribe"),//取消订阅
+	
+	TRANSFER("transfer_customer_service");//转发到客服
 	
 	private String name;
 	
